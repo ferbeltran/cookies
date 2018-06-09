@@ -1,0 +1,20 @@
+name: cookies
+description: A new Flutter project.
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  material_design_icons_flutter: 2.3.50
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+
+flutter:
+
+  uses-material-design: true
+
