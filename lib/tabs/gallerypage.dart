@@ -11,8 +11,7 @@ class GalleryPage extends StatefulWidget {
 }
 
 class _GalleryPageState extends State<GalleryPage> {
-  
-  List<Photo> photos;
+  List<Photo> photos = [];
   Map map;
   bool _isLoading = true;
 
@@ -26,11 +25,12 @@ class _GalleryPageState extends State<GalleryPage> {
     var response = await http.get(flickrUrl);
 
     if (response.statusCode == 200) {
-     
-      final List body = json.decode(response.body);
-      var fotos = body.map((p) => new Photo.fromMap(p)).toList();
+      var body = json.decode(response.body);
+      List list = body["photos"]["photo"];
+      List<Photo> fotos = list.map((p) => new Photo.fromMap(p)).toList();
 
       this.setState(() {
+        photos = fotos;
         _isLoading = false;
       });
     }
@@ -39,14 +39,15 @@ class _GalleryPageState extends State<GalleryPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: _isLoading ? CircularProgressIndicator(backgroundColor: Colors.purple,) :
-      ListView.builder(
-      itemCount:photos == null ? 0 : photos.length, 
-        itemBuilder:(BuildContext context, int index) {
-           return new Container(
-             child: new Image.network(photos[index].mediumImageUrl) 
-           ); 
-        }
-    ));
+        child: _isLoading
+            ? CircularProgressIndicator(
+                backgroundColor: Colors.purple,
+              )
+            : ListView.builder(
+                itemCount: photos == null ? 0 : photos.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return new Container(
+                      child: new Image.network(photos[index].mediumImageUrl));
+                }));
   }
 }
